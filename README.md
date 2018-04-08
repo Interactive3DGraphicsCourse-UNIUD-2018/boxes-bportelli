@@ -18,7 +18,7 @@ Processo:
 - scelta del soggetto e schizzi a mano libera
 - schizzo del robot su carta millimetrata
 
-![Sketch](https://github.com/Interactive3DGraphicsCourse-UNIUD-2018/boxes-bportelli/blob/master/journal_files/robot_sketch.png)
+![Sketch](https://github.com/Interactive3DGraphicsCourse-UNIUD-2018/boxes-bportelli/blob/master/journal_files/robot_sketch.jpg)
 
 - prima pianificazione dell'albero della scena (che è stato poi aggiornato e migliorato in itinere per semplificare le animazioni)
 
