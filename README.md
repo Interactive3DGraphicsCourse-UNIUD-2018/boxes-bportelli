@@ -1,6 +1,6 @@
 # Report
 
-Il progetto finale è una scena che ritrae un robot che (dopo essere probabilmente precipitato dal cielo) si trova incastrato nel terreno, si guarda attorno e tenta di liberarsi strattonandosi.
+Il progetto finale è una scena che ritrae un robot che (per ragioni non chiare) si trova incastrato nel terreno, si guarda attorno e tenta di liberarsi strattonandosi.
 
 Il codice per visualizzare la scena si trova nel file Scene.html. Il codice per generare la scena è diviso nei file:
 
