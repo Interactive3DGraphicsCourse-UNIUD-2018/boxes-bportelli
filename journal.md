@@ -4,7 +4,6 @@ Dopo aver analizzato il codice fornito ho deciso di usare come codice di partenz
 
 ## Problemi con le texture: texture diverse per ogni faccia del cubo
 
-<<<<<<< HEAD
 Ho sperimentato con le texture, tentando di creare un cubo con texture diverse per ogni faccia. Leggendo la documentazione ho tentato di usare CubeTexture e ho ottenuto una piccola skybox invece del risultato che mi aspettavo. Ho poi provato a creare una Mesh e passare un array di materiali come materiale, ma non è stata renderizzata. Mi sono accontentata di usare 6 PlaneGeometry con texture diverse per ottenere il risultato che volevo. Esperimenti sospesi (da riprendere nel caso tornassero utili nel progetto).
 
 ![First problem](https://github.com/Interactive3DGraphicsCourse-UNIUD-2018/boxes-bportelli/blob/master/journal_files/cube_problems.png)
@@ -44,14 +43,3 @@ A seguito di ricerca online ho visualizzato il frustum della camera della luce c
 Ho aggiustato i valori dei piani della camera della luce per permettere la generazione delle ombre sulla scena.
 
 ![Shadows Are Visible](https://github.com/Interactive3DGraphicsCourse-UNIUD-2018/boxes-bportelli/blob/master/journal_files/01_yes_shadows.png)
-=======
-![First problem](https://github.com/Interactive3DGraphicsCourse-UNIUD-2018/boxes-bportelli/blob/master/journal_files/cube_problems.png)
-
-## 23/03/2018
-
-Decided on the subject of the scene. Made some sketches. 
-
-## 24/03/2018
-
-Finalized sketches.
->>>>>>> 9e2b3692fe4d296341e5c5925df5f06d5a234d82
