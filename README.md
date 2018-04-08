@@ -11,25 +11,27 @@ Il codice per visualizzare la scena si trova nel file Scene.html. Il codice per 
 
 Il tutto è stato scritto a partire dal codice di StartingCode-withLights.html e StartingCode-heightmap.html. Sono usate come risorse le texture presenti nella cartella textures (eye.jpg, grass.png, ground.png, iron.jpg e rusty_iron_.jpg) e la heightmap sempre nella stessa cartella per generare il terreno (heightmap_.png).
 
+## Risultato finale
+
 ![Scene](https://github.com/Interactive3DGraphicsCourse-UNIUD-2018/boxes-bportelli/blob/master/journal_files/scene.png)
 
-Processo:
+## Processo
 
 - scelta del soggetto e schizzi a mano libera
 - schizzo del robot su carta millimetrata
-
-![Sketch](https://github.com/Interactive3DGraphicsCourse-UNIUD-2018/boxes-bportelli/blob/master/journal_files/robot_sketch.jpg)
-
 - prima pianificazione dell'albero della scena (che è stato poi aggiornato e migliorato in itinere per semplificare le animazioni)
-
-![Scene Tree](https://github.com/Interactive3DGraphicsCourse-UNIUD-2018/boxes-bportelli/blob/master/journal_files/boxes-bportelli_scene_tree.png)
-
 - piazzamento dei cubi (senza texture) per osservare l'aspetto del modello in 3D prima di continuare. Durante la scrittura creazione procedure ad-hoc per facilitare il piazzamento dei cubi relativamente al parent come onTopOfParent, onRightOfParent (robot_model.js)
 - creazione e applicazione delle texture (con relative considerazioni su come gestirle, vedi journal.md) (materials.js)
 - pianificazione dell'animazione
 - divisione dell'animazione in movimenti base e scrittura delle corrispondenti procedure: rotazione orizzontale della testa (lookX), inclinazione verso l'alto o verso il basso (lookY), apertura e chiusura della bocca (openMouth, closeMouth)...
 - scrittura e test del codice per l'animazione (procedura animate in animation.js)
 - scrittura del codice di per la generazione del terreno (terrain_functions.js) e test di diverse modalità di generazione del terreno per ottenere risultati visivamente piacevoli ma senza degrado delle prestazioni (vedi journal.md)
+
+Schizzo:
+![Sketch](https://github.com/Interactive3DGraphicsCourse-UNIUD-2018/boxes-bportelli/blob/master/journal_files/robot_sketch.jpg)
+
+Albero della scena:
+![Scene Tree](https://github.com/Interactive3DGraphicsCourse-UNIUD-2018/boxes-bportelli/blob/master/journal_files/boxes-bportelli_scene_tree.png)
 
 # Modeling and rendering with boxes
 
