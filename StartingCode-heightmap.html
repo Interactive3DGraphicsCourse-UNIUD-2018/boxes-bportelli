@@ -38,7 +38,7 @@
 		    var context = canvas.getContext( '2d' );
  
 		    var size = img.width * img.height;
-			console.log(size);
+			//console.log(size);
 		    var data = new Float32Array( size );
  
 		    context.drawImage(img,0,0);
@@ -68,14 +68,14 @@
 			renderer.setClearColor( 0xf0f0f0 );
 			document.body.appendChild( renderer.domElement );
 			
-			camera.position.set(3,4,6);
+			camera.position.set(50,50,50);
 			camera.lookAt( new THREE.Vector3(0,0,0));
 			
 			var geometry = new THREE.BoxGeometry(1,1,1);
-			var material = new THREE.MeshBasicMaterial( { color: 0xaaaaaa } );
+			var material = new THREE.MeshPhongMaterial( { color: 0xaaaaaa, wireframe:false } );
 			var cube = new THREE.Mesh( geometry, material );
 			
-			scene.add( cube );
+			//scene.add( cube );
 			
 			stats = new Stats();
 			stats.domElement.style.position = 'absolute';
@@ -83,23 +83,147 @@
 			document.body.appendChild( stats.domElement );
 			
 			// uncomment if you need to draw coordinate axes when building the scene
-			//Coordinates.drawAllAxes();
+			Coordinates.drawAllAxes();
 			
 			controls = new THREE.OrbitControls( camera );
 			controls.addEventListener( 'change', Render );
 			
 			// terrain
 			var img = new Image();
-			img.onload = function () {
-  
-				//get height data from img
-				var data = getHeightData(img,0.1);
-  
-				// load img source
-				img.src = "textures/heightmap2.png";
-			}
+			
+			cubes = true
+			
+			if (cubes){
+			
+				img.onload = function () {
+			
+					var data = getHeightData(img,1);
+					
+					k = Math.sqrt(data.length);
+					for (i=0; i<k; i++){
+						for (j=0; j<k; j++){
+							
+							var h_max = data[i+j*k];
+							var h_min = 255;
+							
+							var close = matrixUp(k, i+j*k);
+							if (close != null) h_min = Math.min(h_min, data[close]);
+							else h_min = 0;
+							
+							close = matrixDown(k, i+j*k);
+							if (close != null) h_min = Math.min(h_min, data[close]);
+							else h_min = 0;
+							
+							close = matrixLeft(k, i+j*k);
+							if (close != null) h_min = Math.min(h_min, data[close]);
+							else h_min = 0;
+							
+							close = matrixRight(k, i+j*k);
+							if (close != null) h_min = Math.min(h_min, data[close]);
+							else h_min = 0;
+							
+							
+							var geometry = new THREE.BoxGeometry(1,1,1);
+							
+							
+							if (h_min < h_max) {
+							
+								for (var y=Math.floor(h_min/16); y*16<=h_max; y++){
+									var c = cube.clone();
+									
+									scene.add(c);
+									c.position.x = i;
+									c.position.z = j;
+									c.position.y = y;
+									//console.log("added cube at height ", y, " pos ", i,j);
+								}
+							
+							} else {
+							
+								y = Math.floor(h_max/16);
+								var c = cube.clone();
+								scene.add(c);
+								c.position.x = i;
+								c.position.z = j;
+								c.position.y = y;
+								//console.log("added a single cube at height ", y, " pos ", i,j);
+							}
+						}
+					}
+				} // end function
+			
+			} else {
+			
+				img.onload = function () {
+					//get height data from img
+					var data = getHeightData(img,.1);
+					k = Math.sqrt(data.length);
+					for (i=0; i<k; i++){
+						for (j=0; j<k; j++){
+							var c = cube.clone();
+							scene.add(c);
+							console.log("ADDED SOME I SHOULD'N HAVE ADDED");
+							c.position.x = i;
+							c.position.z = j;
+							
+							val = data[i+j*k];
+							
+							if (val != 0){
+								c.scale.y = val;
+								c.position.y = val/2;
+							} else {
+								c.scale.y = 0.1;
+								c.position.y = .1/2;
+							}
+						}
+					}
+				} // end function
+			
+			} // end else
+			
+			// load img source
+			img.src = "textures/heightmap2 - Copia.png";
+			
+			hemiLight = new THREE.HemisphereLight( 0xffffff, 0xffffff, 0.6 );
+			hemiLight.color.setHSL( 0.6, 1, 0.6 );
+			hemiLight.groundColor.setHSL( 0.095, 1, 0.75 );
+			hemiLight.position.set( 0, 500, 0 );
+			scene.add( hemiLight );
+
+			dirLight = new THREE.DirectionalLight( 0xffffff, 1 );
+			dirLight.color.setHSL( 0.1, 1, 0.95 );
+			dirLight.position.set( -1, 7, 5 );
+			dirLight.position.multiplyScalar( 50 );
+			scene.add( dirLight );
+			dirLight.castShadow = true;
+			dirLight.shadow.mapSize.width = 1024;
+			dirLight.shadow.mapSize.height = 1024;
 			
 			
+		}
+		
+		/*
+		 00 01 02 03
+		 04 05 06 07
+		 08 09 10 11
+		 12 13 14 15
+		*/
+		
+		function matrixUp(dim, k) {
+			if (k < dim) return null;
+			else return k-dim;
+		}
+		function matrixDown(dim, k) {
+			if (k < dim*dim-dim) return k+dim;
+			else return null;
+		}
+		function matrixLeft(dim, k) {
+			if (k % dim == 0) return null;
+			else return k-1;
+		}
+		function matrixRight(dim, k) {
+			if (k % dim == dim-1) return null;
+			else return  k+1;
 		}
 		
 		function Update() {

@@ -1,0 +1,151 @@
+<html>
+	<head>
+		<title>Beatrice Portelli - Code for 1st Project 2018 - with lights and textures</title>
+		<style>
+		
+		body {
+			font-family: Monospace;
+			background-color: #f0f0f0;
+			margin: 0px;
+			overflow: hidden;
+		}
+		
+		canvas { 
+			width: 100%; 
+			height: 100%;
+		}
+	
+	</style>
+		<script src="lib/three.min.js"></script>
+		<script src="lib/stats.min.js"></script>
+		<script src="lib/Coordinates.js"></script>
+		<script src="lib/OrbitControls.js"></script>
+		
+		<script src="terrain_functions.js"></script>
+		<script src="robot_model.js"></script>
+		<script src="materials.js"></script>
+		<script src="animation.js"></script>
+	</head>
+	<body>
+		
+		<script>
+		
+		var IRON = 0;
+		var DARK_IRON = 1;
+		var EYES = 2;
+		var TERRAIN = 3;
+		var GRASS = 4;
+		var GROUND = 5;
+		
+		var textures = true;
+		var activate_controls = false;
+
+		var scene, camera, renderer, controls, stats;
+		var head_bot, torso, mouth, screw_right, screw_left;
+		var material_array = [];
+		var start = null;
+		
+		function Start() {
+			scene = new THREE.Scene();
+			camera = new THREE.PerspectiveCamera( 55, window.innerWidth / window.innerHeight, 0.1, 1000 );
+
+			renderer = new THREE.WebGLRenderer( {antialias: true} );
+			renderer.setSize( window.innerWidth, window.innerHeight );
+			renderer.setClearColor( 0x91bfea );
+			renderer.setPixelRatio( window.devicePixelRatio );
+			renderer.gammaInput = true;
+			renderer.gammaOutput = true;
+			renderer.shadowMap.enabled = true;
+			document.body.appendChild( renderer.domElement );
+			
+			camera.position.set(0,20,90);
+			camera.lookAt( new THREE.Vector3(0,0,0));
+			camera.rotation.x = Math.PI * 5 / 180;
+			
+			//-----------------------------------------
+			
+			makeMaterials(); //from materials.js
+			makeTerrain("textures/heightmap_.png"); //from terrain.js
+			makeRobot(); //from robot_model.js
+			
+			//-----------------------------------------
+
+			//light
+			hemiLight = new THREE.HemisphereLight( 0x91bfea, 0x81bc0f, 0.6 );
+			hemiLight.position.set( 0, 500, 0 );
+			scene.add( hemiLight );
+
+			//directional light
+			dirLight = new THREE.DirectionalLight( 0xf7eca2, 1 );
+			dirLight.position.set( -10, 7, 20 );
+			dirLight.position.multiplyScalar( 50 );
+			scene.add( dirLight );
+			dirLight.castShadow = true;
+			dirLight.shadow.mapSize.width = 1024;
+			dirLight.shadow.mapSize.height = 1024;
+			
+			//show shados
+			var shadow_cam = dirLight.shadow.camera;
+			
+			shadow_cam.near = 1000;
+			shadow_cam.far = 1500;
+			shadow_cam.top = 90;
+			shadow_cam.bottom = -15;
+			shadow_cam.left = -70;
+			shadow_cam.right = 70;
+			
+			//var helper = new THREE.CameraHelper(dirLight.shadow.camera);
+			//scene.add(helper);
+
+
+			// GROUND
+			var groundGeo = new THREE.PlaneBufferGeometry( 1000, 1000 );
+			var groundMat = new THREE.MeshPhongMaterial( { color: 0x81bc0f, specular: 0x050505 } );
+			var groundMat = material_array[GROUND];
+			var ground = new THREE.Mesh( groundGeo, groundMat );
+			ground.position.y = -0.5;
+			ground.rotation.x = -Math.PI/2;
+			scene.add( ground );
+			ground.receiveShadow = true;
+			
+			stats = new Stats();
+			stats.domElement.style.position = 'absolute';
+			stats.domElement.style.top = '0px';
+			//document.body.appendChild( stats.domElement );
+			
+			// uncomment if you need to draw coordinate axes when building the scene
+			//Coordinates.drawAllAxes();
+			
+			if (activate_controls){
+				controls = new THREE.OrbitControls( camera );
+				controls.addEventListener( 'change', Render );
+			}				
+		}
+		
+
+		function Update() {
+		
+			requestAnimationFrame( Update );
+			if (activate_controls){
+				controls.update();  
+			}
+			
+			now = Date.now();
+			if (now > start+19*1000) start = Date.now();
+			if (start!=null) animate(start, now);
+			
+			stats.update();
+			Render();
+		}
+		
+		function Render() {
+			
+			renderer.render(scene, camera);
+		}
+		
+		Start();
+		Update();
+			
+		</script>
+	</body>
+</html>
